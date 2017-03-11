@@ -32,15 +32,36 @@ bool grammaire::estDansLEnsembleNonTerminal(char nom)
     }
     return false;
 }
-nonTerminal& grammaire::recupererElement(char nom)
+nonTerminal* grammaire::recupererElement(char nom)
 {
         for(int i = 0; i < this->NT.size(); i++)
     {
         if(this->NT.at(i).getNom() == nom)
         {
-            return this->NT.at(i);
+            return &(this->NT.at(i));
         }
     }
+}
+bool grammaire::testGrammaireRecursive()
+{
+	for (std::vector<nonTerminal>::iterator nonterminal = NT.begin(); nonterminal != NT.end(); nonterminal++)
+	{
+		if (!nonterminal->estRecursif())
+		{
+			DEBUG_MSG("[INFO] : Le non terminal " << nonterminal->getNom() << "n'est pas recursif");
+		}
+		else
+		{
+			DEBUG_MSG("[INFO] Le non terminal : " << nonterminal->getNom() << "est recursif. La grammaire est donc recursive");
+			return false;
+		}
+	}
+	return true;
+}
+void grammaire::mettreAJourRegles(char nom, nonTerminal nt)
+{
+	nonTerminal* aChanger = recupererElement(nom);
+	aChanger->mettreAJourRegles(nt);
 }
 void grammaire::afficher()
 {

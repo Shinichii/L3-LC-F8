@@ -12,7 +12,11 @@ class grammaire
         void ajouterTerminal(char terminal);
         void ajouterNonTerminal(nonTerminal nt);
         bool estDansLEnsembleNonTerminal(char nom);
-        nonTerminal& recupererElement(char nom);
+        nonTerminal* recupererElement(char nom);
+		bool testGrammaireRecursive();
+
+		void mettreAJourRegles(char nom, nonTerminal nt);
+
         void afficher();
     protected:
     private:

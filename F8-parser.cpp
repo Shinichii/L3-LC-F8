@@ -23,10 +23,6 @@ void lectureFichier(std::string cheminFichier, grammaire& g)
                 g.setAxiome(caractereLu);
             }
             nonTerminal nt(caractereLu);
-            if(g.estDansLEnsembleNonTerminal(caractereLu))
-            {
-                nt = g.recupererElement(caractereLu);
-            }
             fichier.get(caractereLu); // Pour ignorer le =
             std::vector<char> regle;
             while(caractereLu != '\n' && !fichier.eof())
@@ -58,6 +54,10 @@ void lectureFichier(std::string cheminFichier, grammaire& g)
                   Pour l'instant seul les premières règles sont prises en compte*/
                 g.ajouterNonTerminal(nt);
             }
+			else
+			{
+				g.mettreAJourRegles(nt.getNom(), nt);
+			}
             std::cout << nt << std::endl;
         }
         fichier.close();
