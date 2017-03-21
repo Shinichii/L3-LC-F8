@@ -32,14 +32,12 @@ bool nonTerminal::estRecursif()
 {
 	for (std::vector<std::vector<char>>::iterator it = regles.begin(); it != regles.end(); it++)
 	{
-		for (std::vector<char>::iterator it2 = it->begin(); it2 != it->end(); it2++)
-		{
-			if (*it2 == this->nom)
+		DEBUG_MSG("[INFO] : Test de la recursivite a gauche sur " << this->getNom());
+			if (it->at(0) == this->nom)
 			{
-				DEBUG_MSG("Grammaire recursive a gauche detectee.");
+				DEBUG_MSG("[INFO]Grammaire recursive a gauche detectee.");
 				return true;
 			}
-		}
 	}
 }
 

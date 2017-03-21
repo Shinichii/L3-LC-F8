@@ -42,17 +42,17 @@ nonTerminal* grammaire::recupererElement(char nom)
         }
     }
 }
-bool grammaire::testGrammaireRecursive()
+bool grammaire::traitementGrammaireRecursive()
 {
 	for (std::vector<nonTerminal>::iterator nonterminal = NT.begin(); nonterminal != NT.end(); nonterminal++)
 	{
 		if (!nonterminal->estRecursif())
 		{
-			DEBUG_MSG("[INFO] : Le non terminal " << nonterminal->getNom() << "n'est pas recursif");
+			DEBUG_MSG("[INFO] : Le non terminal " << nonterminal->getNom() << " n'est pas recursif");
 		}
 		else
 		{
-			DEBUG_MSG("[INFO] Le non terminal : " << nonterminal->getNom() << "est recursif. La grammaire est donc recursive");
+			DEBUG_MSG("[INFO] : Le non terminal : " << nonterminal->getNom() << " est recursif. La grammaire est donc recursive");
 			return false;
 		}
 	}

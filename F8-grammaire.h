@@ -11,10 +11,11 @@ class grammaire
         char getAxiome();
         void ajouterTerminal(char terminal);
         void ajouterNonTerminal(nonTerminal nt);
+
         bool estDansLEnsembleNonTerminal(char nom);
         nonTerminal* recupererElement(char nom);
-		bool testGrammaireRecursive();
 
+		bool traitementGrammaireRecursive();
 		void mettreAJourRegles(char nom, nonTerminal nt);
 
         void afficher();
