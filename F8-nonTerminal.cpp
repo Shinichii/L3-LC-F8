@@ -99,9 +99,19 @@ void nonTerminal::eliminationRecursivite(nonTerminal* etatPrime)
 		}
 		else
 		{
-			std::vector<char> nouvelleRegle(regles.at(i).begin(), regles.at(i).end());
-			nouvelleRegle.push_back(etatPrime->getNom());
-			reglesNonRecursives.push_back(nouvelleRegle);
+			if (regles.at(i).at(0) == '#')
+			{
+				std::vector<char> st;
+				st.push_back('#');
+				reglesNonRecursives.push_back(st);
+				//On fait rien
+			}
+			else
+			{
+				std::vector<char> nouvelleRegle(regles.at(i).begin(), regles.at(i).end());
+				nouvelleRegle.push_back(etatPrime->getNom());
+				reglesNonRecursives.push_back(nouvelleRegle);
+			}
 		}
 	}
 	regles.clear();

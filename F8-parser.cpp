@@ -39,6 +39,11 @@ void lectureFichier(std::string cheminFichier, grammaire& g)
                 }
                 else if(caractereLu == '\0')
                 {
+					if (regle.size() > 0)
+					{
+						nt.ajouterRegle(regle);
+						regle.clear();
+					}
                     //do  nothing
                 }
                 else
