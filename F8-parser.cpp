@@ -50,8 +50,6 @@ void lectureFichier(std::string cheminFichier, grammaire& g)
             }
             if(!g.estDansLEnsembleNonTerminal(nt.getNom()))
             {
-                /*TO DO : Gérer le fait que lorque l'on a le meme etat non terminal sur deux lignes que l'etat soit bien mis à jour notamment au niveau des regles
-                  Pour l'instant seul les premières règles sont prises en compte*/
                 g.ajouterNonTerminal(nt);
             }
 			else

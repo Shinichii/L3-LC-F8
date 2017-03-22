@@ -12,10 +12,12 @@ class grammaire
         void ajouterTerminal(char terminal);
         void ajouterNonTerminal(nonTerminal nt);
 
+		char creerEtatPrime();
+
         bool estDansLEnsembleNonTerminal(char nom);
         nonTerminal* recupererElement(char nom);
 
-		bool traitementGrammaireRecursive();
+		void traitementGrammaireRecursive();
 		void mettreAJourRegles(char nom, nonTerminal nt);
 
         void afficher();
