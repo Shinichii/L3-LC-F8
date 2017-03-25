@@ -23,3 +23,14 @@ Pour chaque NT
 			Alors PREMIER(NT) recupere PREMIER(CaractereNT);
 		Sinon
 			Premier(NT) recupere le caractereTerminal.
+
+
+ALGO SUIVANT(NT)
+
+Pour chaque NT
+	Mettre $ dans SUIVANT(AXIOME) OU $ EST LE MARQUEUR DE FIN
+	On regarde la regle
+		Si la regle contient un nom terminal (de la forme ...BC)
+			Le contenu de PREMIER(C) SAUF # est ajouté à B
+		Si la regle est de type CB ou ..BC tel que PREMIER(C) = #
+			Le contenu de SUIVANT(A) EST AJOUTE A SUIVANT(B)

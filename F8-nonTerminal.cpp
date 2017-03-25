@@ -137,6 +137,19 @@ void nonTerminal::ajouterPremiers(std::set<char> caracteres)
 	}
 }
 
+void nonTerminal::ajouterSuivant(char c)
+{
+	this->suivant.insert(c);
+}
+
+void nonTerminal::ajouterSuivants(std::set<char> caracteres)
+{
+	for (char caractere : caracteres)
+	{
+		this->ajouterSuivant(caractere);
+	}
+}
+
 std::set<char> nonTerminal::getPremiers()
 {
 	return std::set<char>(this->premier);

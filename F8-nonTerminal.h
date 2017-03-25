@@ -31,6 +31,9 @@ public:
 	void ajouterPremier(char c);
 	void ajouterPremiers(std::set<char> caracteres);
 
+	void ajouterSuivant(char c);
+	void ajouterSuivants(std::set<char> caracteres);
+
 	std::set<char> getPremiers();
 	void afficherPremiers();
 protected:
@@ -39,6 +42,7 @@ private:
     std::vector<std::vector<char>> regles;
 
 	std::set<char> premier;
+	std::set<char> suivant;
 };
 
 #endif // NONTERMINAL_H

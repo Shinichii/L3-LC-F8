@@ -159,3 +159,25 @@ std::set<char> grammaire::calculPremier(nonTerminal *nt)
 	}
 	return nt->getPremiers();
 }
+
+void grammaire::calculSuivant()
+{
+	for (int i = 0; i < NT.size(); i++)
+	{
+		calculSuivant(&(NT.at(i)));
+	}
+}
+
+std::set<char> grammaire::calculSuivant(nonTerminal * nt)
+{
+	/*
+	Pour chaque NT
+	Mettre $ dans SUIVANT(AXIOME) OU $ EST LE MARQUEUR DE FIN
+	On regarde la regle
+	Si la regle contient un nom terminal (de la forme ...BC)
+	Le contenu de PREMIER(C) SAUF # est ajouté à B
+	Si la regle est de type CB ou ..BC tel que PREMIER(C) = #
+	Le contenu de SUIVANT(A) EST AJOUTE A SUIVANT(B)
+	*/
+	return std::set<char>();
+}

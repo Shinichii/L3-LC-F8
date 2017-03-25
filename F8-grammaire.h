@@ -25,6 +25,8 @@ class grammaire
 
 		void calculPremiers();
 		std::set<char> calculPremier(nonTerminal *nt);
+		void calculSuivant();
+		std::set<char> calculSuivant(nonTerminal *nt);
     protected:
     private:
         char axiome;
