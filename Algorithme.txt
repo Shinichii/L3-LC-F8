@@ -1,9 +1,17 @@
-Algorithme d'élimination de récursivité à gauche.
+E = TA
+T = FB
+T = #
+F = (E)
+F = 0
+F = 1
+A = #
+A = +TA
+B = #
+B = *FB
 
-Entrée : Etat non terminal et ses regles
+PREMIER(TERMINAL) = TERMINAL
 
-Pour chaque regle de l'état non terminal, on vérifie si elle est récursive à gauche
-	Si elle l'est, on vérifie si un nouvel état associé a été crée
-		Si c'est le cas, on lui ajoute la règle modifiée
-		Sinon on crée un nouvel état, on passe à l'étatCrée la règle
-	Sinon on passe à la suite
+SI NT = #
+	PREMIER(NT) = #
+SI NT = Y1Y2..
+PREMIER(NT)

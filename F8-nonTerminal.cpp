@@ -87,7 +87,7 @@ void nonTerminal::eliminationRecursivite(nonTerminal* etatPrime)
 		if (estRecursif(regles.at(i).begin()))
 		{
 			int offset = 0;
-			while (regles.at(i).at(offset) == this->getNom())
+			while (regles.at(i).at(offset) == this->getNom() && offset < regles.at(i).size()-1)
 			{
 				std::cout << regles.at(i).at(offset) << std::endl;
 				offset++;
