@@ -14,7 +14,7 @@
 */
 void recupererElements(vector <string>& listeFichiers, string extension)
 {
-	std::string path = "..";
+	std::string path = "./";
 
 	for(auto &p : fs::directory_iterator(path))
 	{

@@ -5,11 +5,28 @@
 
 int main()
 {
-    grammaire g;
-    lectureFichier("D:\\LangagesEtCompilation\\L3-LC-F8\\F8-G9.txt", g);
-    g.afficher();
-	g.traitementGrammaireRecursive();
-	g.calculPremiers();
-	g.afficher();
+	char reponse;
+	bool continuer = true;
+	while (continuer)
+	{
+		grammaire g;
+		choisirElement(".txt");
+		lectureFichier("D:\\LangagesEtCompilation\\L3-LC-F8\\F8-G9.txt", g);
+		g.afficher();
+		g.traitementGrammaireRecursive();
+		g.calculPremiers();
+		g.afficher();
+		std::cout << "Voulez-vous continuer ? (O/N)" << std::endl;
+		do
+		{
+			reponse = 'K';
+			std::cin >> reponse;
+		} while (cin.bad() && reponse != 'O' && reponse != 'o' && reponse != 'n' && reponse != 'N');
+		if (reponse == 'N' || reponse == 'n')
+		{
+			continuer = false;
+		}
+	}
+
 	return 0;
 }
