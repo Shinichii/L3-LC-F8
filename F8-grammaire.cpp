@@ -87,7 +87,7 @@ void grammaire::traitementGrammaireRecursive()
 		}
 		else
 		{
-			DEBUG_MSG("[INFO] : Le non terminal : " << NT.at(i).getNom() << " est recursif. La grammaire est donc recursive");
+			DEBUG_MSG("[INFO] : Le non terminal : " << NT.at(i).getNom() << " est recursif.");
 			aTraiter[i] = true;
 		}
 	}

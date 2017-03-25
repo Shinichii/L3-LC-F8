@@ -42,9 +42,9 @@ std::vector<std::vector<char>> const & nonTerminal::getRegles() const
 
 bool nonTerminal::estRecursif()
 {
+	DEBUG_MSG("[INFO] : Test de la recursivite a gauche sur " << this->getNom());
 	for (std::vector<std::vector<char>>::iterator it = regles.begin(); it != regles.end(); it++)
 	{
-		DEBUG_MSG("[INFO] : Test de la recursivite a gauche sur " << this->getNom());
 		if (estRecursif(it->begin()))
 		{
 			return true;
