@@ -5,6 +5,10 @@ grammaire::grammaire()
     //ctor
     axiome = '#';
 }
+bool estTerminal(char c)
+{
+	return !(c >= 'A' && c <= 'Z') && c != '\n' && c != '\0' && c != '|';
+}
 void grammaire::setAxiome(char axiome)
 {
     this->axiome = axiome;
@@ -103,6 +107,7 @@ void grammaire::mettreAJourRegles(char nom, nonTerminal nt)
 }
 void grammaire::afficher()
 {
+	std::set<char> premiers;
     std::cout << " [ AXIOME ] : " << axiome << std::endl;
     std::cout << " =============" << std::endl;
     std::cout << " [ TERMINAUX ]" << std::endl;
@@ -120,7 +125,37 @@ void grammaire::afficher()
     std::cout << "[ REGLES ]" << std::endl;
     for(int i = 0; i < NT.size();i++)
     {
-            std::cout << NT.at(i) << std::endl;
+            std::cout << NT.at(i);
+			
     }
+	std::cout << "[PREMIERS]" << std::endl;
+	for (int i = 0; i < NT.size(); i++)
+	{
+		NT.at(i).afficherPremiers();
+	}
+}
 
+void grammaire::calculPremiers()
+{
+	for (int i = 0; i < NT.size(); i++)
+	{
+		calculPremier(&(NT.at(i)));
+	}
+}
+
+std::set<char> grammaire::calculPremier(nonTerminal *nt)
+{
+	std::vector<std::vector<char>> regles = nt->getRegles();
+	for (std::vector<std::vector<char>>::iterator it = regles.begin(); it != regles.end(); it++)
+	{
+		if (estTerminal(it->at(0)))
+		{
+			nt->ajouterPremier(it->at(0));
+		}
+		else
+		{
+			nt->ajouterPremiers(calculPremier(recupererElement(it->at(0))));
+		}
+	}
+	return nt->getPremiers();
 }

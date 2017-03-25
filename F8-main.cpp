@@ -6,9 +6,10 @@
 int main()
 {
     grammaire g;
-    lectureFichier("D:\\LangagesEtCompilation\\L3-LC-F8\\F8-G2.txt", g);
+    lectureFichier("D:\\LangagesEtCompilation\\L3-LC-F8\\F8-G3.txt", g);
     g.afficher();
 	g.traitementGrammaireRecursive();
+	g.calculPremiers();
 	g.afficher();
 	return 0;
 }

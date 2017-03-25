@@ -1,8 +1,6 @@
 #include "F8-parser.h"
-bool estTerminal(char c)
-{
-    return !(c >= 'A' && c <= 'Z') && c !='\n' && c != '\0' && c != '|';
-}
+
+
 void lectureFichier(std::string cheminFichier, grammaire& g)
 {
     std::ifstream fichier(cheminFichier.c_str(), std::ios::in);

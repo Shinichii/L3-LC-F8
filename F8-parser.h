@@ -6,6 +6,7 @@
 #include <fstream>
 #include "F8-grammaire.h"
 
+
 void lectureFichier(std::string cheminFichier, grammaire& g);
 
 #endif // F8_PARSER_H_INCLUDED

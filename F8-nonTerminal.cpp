@@ -35,6 +35,11 @@ char nonTerminal::getNom()
     return this->nom;
 }
 
+std::vector<std::vector<char>> const & nonTerminal::getRegles() const
+{
+	return this->regles;
+}
+
 bool nonTerminal::estRecursif()
 {
 	for (std::vector<std::vector<char>>::iterator it = regles.begin(); it != regles.end(); it++)
@@ -117,4 +122,31 @@ void nonTerminal::eliminationRecursivite(nonTerminal* etatPrime)
 	regles.clear();
 	ajouterRegles(reglesNonRecursives);
 	etatPrime->ajouterRegles(reglesNonRecursivesPrime);
+}
+
+void nonTerminal::ajouterPremier(char c)
+{
+	this->premier.insert(c);
+}
+
+void nonTerminal::ajouterPremiers(std::set<char> caracteres)
+{
+	for (char caractere : caracteres)
+	{
+		ajouterPremier(caractere);
+	}
+}
+
+std::set<char> nonTerminal::getPremiers()
+{
+	return std::set<char>(this->premier);
+}
+
+void nonTerminal::afficherPremiers()
+{
+	std::cout << "PREMIER [ " << this->nom << " ] =" << std::endl;
+	for (std::set<char>::iterator it = premier.begin(); it != premier.end(); it++)
+	{
+		std::cout << *it << std::endl;
+	}
 }

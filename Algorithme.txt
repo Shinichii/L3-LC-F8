@@ -15,3 +15,11 @@ SI NT = #
 	PREMIER(NT) = #
 SI NT = Y1Y2..
 PREMIER(NT)
+
+
+Pour chaque NT
+	Pour chaque regle
+		Si le premier caractere est non terminal
+			Alors PREMIER(NT) recupere PREMIER(CaractereNT);
+		Sinon
+			Premier(NT) recupere le caractereTerminal.
