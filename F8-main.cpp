@@ -15,6 +15,7 @@ int main()
 		g.afficher();
 		g.traitementGrammaireRecursive();
 		g.calculPremiers();
+		g.calculSuivants();
 		g.afficher();
 		std::cout << "Voulez-vous continuer ? (O/N)" << std::endl;
 		do

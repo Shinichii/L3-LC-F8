@@ -31,11 +31,16 @@ public:
 	void ajouterPremier(char c);
 	void ajouterPremiers(std::set<char> caracteres);
 
-	void ajouterSuivant(char c);
-	void ajouterSuivants(std::set<char> caracteres);
+	bool ajouterSuivant(char c);
+	bool ajouterSuivants(std::set<char> caracteres);
 
 	std::set<char> getPremiers();
 	void afficherPremiers();
+
+	bool premiersContientEpsilon();
+
+	std::set<char> getSuivants();
+	void afficherSuivants();
 protected:
 private:
     char nom;

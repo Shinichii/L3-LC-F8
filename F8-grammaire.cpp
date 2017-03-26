@@ -55,7 +55,7 @@ char grammaire::creerEtatPrime()
 }
 bool grammaire::estDansLEnsembleNonTerminal(char nom)
 {
-    for(int i = 0; i < this->NT.size(); i++)
+    for(unsigned int i = 0; i < this->NT.size(); i++)
     {
         if(this->NT.at(i).getNom() == nom)
         {
@@ -66,19 +66,20 @@ bool grammaire::estDansLEnsembleNonTerminal(char nom)
 }
 nonTerminal* grammaire::recupererElement(char nom)
 {
-        for(int i = 0; i < this->NT.size(); i++)
+        for(unsigned int i = 0; i < this->NT.size(); i++)
     {
         if(this->NT.at(i).getNom() == nom)
         {
             return &(this->NT.at(i));
         }
     }
+		return NULL;
 }
 void grammaire::traitementGrammaireRecursive()
 {
 	bool* aTraiter = new bool[NT.size()];
 
-	for (int i = 0; i < NT.size(); i++)
+	for (unsigned int i = 0; i < NT.size(); i++)
 	{
 		if (!NT.at(i).estRecursif())
 		{
@@ -91,7 +92,7 @@ void grammaire::traitementGrammaireRecursive()
 			aTraiter[i] = true;
 		}
 	}
-	for (int i = 0; i < NT.size(); i++)
+	for (unsigned int i = 0; i < NT.size(); i++)
 	{
 		if (aTraiter[i] == true)
 		{
@@ -117,27 +118,36 @@ void grammaire::afficher()
     }
     std::cout << "===============" << std::endl;
     std::cout << "[ NON TERMINAUX ]" << std::endl;
-    for(int i = 0; i < NT.size();i++)
+    for(unsigned int i = 0; i < NT.size();i++)
     {
             std::cout << NT.at(i).getNom() << std::endl;
     }
     std::cout << "===============" << std::endl;
     std::cout << "[ REGLES ]" << std::endl;
-    for(int i = 0; i < NT.size();i++)
+    for(unsigned int i = 0; i < NT.size();i++)
     {
             std::cout << NT.at(i);
 			
     }
 	std::cout << "[PREMIERS]" << std::endl;
-	for (int i = 0; i < NT.size(); i++)
+	for (unsigned int i = 0; i < NT.size(); i++)
 	{
 		NT.at(i).afficherPremiers();
+	}
+	for (std::set<char>::iterator it = terminaux.begin(); it != terminaux.end(); it++)
+	{
+		std::cout << "PREMIER [ " << *it << " ] =" << *it << std::endl;
+	}
+	std::cout << "[SUIVANTS]" << std::endl;
+	for (unsigned int i = 0; i < NT.size(); i++)
+	{
+		NT.at(i).afficherSuivants();
 	}
 }
 
 void grammaire::calculPremiers()
 {
-	for (int i = 0; i < NT.size(); i++)
+	for (unsigned int i = 0; i < NT.size(); i++)
 	{
 		calculPremier(&(NT.at(i)));
 	}
@@ -160,24 +170,55 @@ std::set<char> grammaire::calculPremier(nonTerminal *nt)
 	return nt->getPremiers();
 }
 
-void grammaire::calculSuivant()
+void grammaire::calculSuivants()
 {
-	for (int i = 0; i < NT.size(); i++)
+	bool ensembleMisAJour = false;
+	NT.at(0).ajouterSuivant('$');
+	do
 	{
-		calculSuivant(&(NT.at(i)));
-	}
+		ensembleMisAJour = false;
+		for (unsigned int i = 0; i < NT.size(); i++)
+		{
+			std::vector<std::vector<char>> regles = NT.at(i).getRegles();
+			for (std::vector<std::vector<char>>::iterator it = regles.begin(); it != regles.end(); it++)
+			{
+				for (unsigned int j = 0; j < it->size(); j++)
+				{
+					if (estTerminal(it->at(j)))
+					{
+						//On ne fait rien
+					}
+					else
+					{
+						nonTerminal* tmp = recupererElement(it->at(j));
+						if (j+1 < it->size()) //On verifie si une chaine de caractere suit l'element
+						{
+							if (estTerminal(it->at(j + 1)))
+							{
+								ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivant(it->at(j + 1));
+							}
+							else
+							{
+								nonTerminal *temporaire = recupererElement(it->at(j + 1));
+								if (temporaire->premiersContientEpsilon())
+								{
+									ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivants(temporaire->getPremiers());
+								}
+								else
+								{
+									ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivants(NT.at(i).getSuivants());
+								}
+							}
+						}
+						else
+						{
+							ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivants(NT.at(i).getSuivants());
+						}
+					}
+				}
+			}
+		}
+	} while (ensembleMisAJour);
+
 }
 
-std::set<char> grammaire::calculSuivant(nonTerminal * nt)
-{
-	/*
-	Pour chaque NT
-	Mettre $ dans SUIVANT(AXIOME) OU $ EST LE MARQUEUR DE FIN
-	On regarde la regle
-	Si la regle contient un nom terminal (de la forme ...BC)
-	Le contenu de PREMIER(C) SAUF # est ajouté à B
-	Si la regle est de type CB ou ..BC tel que PREMIER(C) = #
-	Le contenu de SUIVANT(A) EST AJOUTE A SUIVANT(B)
-	*/
-	return std::set<char>();
-}

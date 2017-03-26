@@ -137,17 +137,19 @@ void nonTerminal::ajouterPremiers(std::set<char> caracteres)
 	}
 }
 
-void nonTerminal::ajouterSuivant(char c)
+bool nonTerminal::ajouterSuivant(char c)
 {
-	this->suivant.insert(c);
+	return this->suivant.insert(c).second;
 }
 
-void nonTerminal::ajouterSuivants(std::set<char> caracteres)
+bool nonTerminal::ajouterSuivants(std::set<char> caracteres)
 {
+	bool resultat = false;
 	for (char caractere : caracteres)
 	{
-		this->ajouterSuivant(caractere);
+		resultat = resultat || this->ajouterSuivant(caractere);
 	}
+	return resultat;
 }
 
 std::set<char> nonTerminal::getPremiers()
@@ -162,4 +164,31 @@ void nonTerminal::afficherPremiers()
 	{
 		std::cout << *it << std::endl;
 	}
+}
+
+bool nonTerminal::premiersContientEpsilon()
+{
+	for (std::set<char>::iterator it = premier.begin(); it != premier.end(); it++)
+	{
+		if (*it == '#')
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+std::set<char> nonTerminal::getSuivants()
+{
+	return std::set<char>(suivant);
+}
+
+void nonTerminal::afficherSuivants()
+{
+	std::cout << "SUIVANT ( " << this->getNom() << " ) =";
+	for (std::set<char>::iterator it = suivant.begin(); it != suivant.end(); it++)
+	{
+		std::cout << " " << *it << " ";
+	}
+	std::cout << std::endl;
 }
