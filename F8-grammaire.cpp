@@ -202,7 +202,7 @@ void grammaire::calculSuivants()
 								nonTerminal *temporaire = recupererElement(it->at(j + 1));
 								if (!temporaire->premiersContientEpsilon())
 								{
-									ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivants(temporaire->getPremiers());
+									ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivantsSaufEpsilon(temporaire->getPremiers());
 								}
 									ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivants(NT.at(i).getSuivants());
 							}

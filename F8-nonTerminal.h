@@ -33,6 +33,7 @@ public:
 
 	bool ajouterSuivant(char c);
 	bool ajouterSuivants(std::set<char> caracteres);
+	bool ajouterSuivantsSaufEpsilon(std::set<char> caracteres);
 
 	std::set<char> getPremiers();
 	void afficherPremiers();

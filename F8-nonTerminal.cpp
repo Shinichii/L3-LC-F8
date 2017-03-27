@@ -137,6 +137,20 @@ void nonTerminal::ajouterPremiers(std::set<char> caracteres)
 	}
 }
 
+bool nonTerminal::ajouterSuivantsSaufEpsilon(std::set<char> caracteres)
+{
+	bool resultat = false;
+	for (std::set<char>::iterator it = caracteres.begin(); it != caracteres.end(); it++)
+	{
+		if (*it != '#')
+		{
+			resultat = resultat || this->ajouterSuivant(*it);
+		}
+	}
+	return false;
+}
+
+
 bool nonTerminal::ajouterSuivant(char c)
 {
 	return this->suivant.insert(c).second;
