@@ -136,7 +136,7 @@ void grammaire::afficher()
 	}
 	for (std::set<char>::iterator it = terminaux.begin(); it != terminaux.end(); it++)
 	{
-		std::cout << "PREMIER [ " << *it << " ] =" << *it << std::endl;
+		std::cout << "PREMIER [ " << *it << " ] =  " << *it << std::endl;
 	}
 	std::cout << "[SUIVANTS]" << std::endl;
 	for (unsigned int i = 0; i < NT.size(); i++)
@@ -200,14 +200,11 @@ void grammaire::calculSuivants()
 							else
 							{
 								nonTerminal *temporaire = recupererElement(it->at(j + 1));
-								if (temporaire->premiersContientEpsilon())
+								if (!temporaire->premiersContientEpsilon())
 								{
 									ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivants(temporaire->getPremiers());
 								}
-								else
-								{
 									ensembleMisAJour = ensembleMisAJour || tmp->ajouterSuivants(NT.at(i).getSuivants());
-								}
 							}
 						}
 						else

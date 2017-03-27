@@ -159,11 +159,12 @@ std::set<char> nonTerminal::getPremiers()
 
 void nonTerminal::afficherPremiers()
 {
-	std::cout << "PREMIER [ " << this->nom << " ] =" << std::endl;
+	std::cout << "PREMIER [ " << this->nom << " ] =  ";
 	for (std::set<char>::iterator it = premier.begin(); it != premier.end(); it++)
 	{
-		std::cout << *it << std::endl;
+		std::cout << *it << "  ";
 	}
+	std::cout << std::endl;
 }
 
 bool nonTerminal::premiersContientEpsilon()
