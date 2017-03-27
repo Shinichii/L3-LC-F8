@@ -219,3 +219,16 @@ void grammaire::calculSuivants()
 
 }
 
+void grammaire::constructionTableAnalyse()
+{
+	std::cout << "Not done." << std::endl;
+	/*http://digital.cs.usu.edu/~allanv/cs4700/HandoutScott2.pdf
+	M[nt;t]
+	Pour chaque règle r de NT.at(i)
+		1.Pour chaque terminal k dans PREMIER(r), on ajoute r à M[nt;t]
+		2.Si Epsilon dans PREMIER(r) ajouter r à M[nt;b] pour chaque terminal b dans SUIVANT(A)
+		3.Si Epsilon dans PREMIER(r) ET $ dans SUIVANT(NT), ajouter r à M[nt;$]
+		4.Le reste à " "
+	*/
+}
+

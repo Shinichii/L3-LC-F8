@@ -176,7 +176,7 @@ void nonTerminal::afficherPremiers()
 	std::cout << "PREMIER [ " << this->nom << " ] =  ";
 	for (std::set<char>::iterator it = premier.begin(); it != premier.end(); it++)
 	{
-		std::cout << *it << "  ";
+		std::cout << *it << " ";
 	}
 	std::cout << std::endl;
 }
@@ -200,10 +200,10 @@ std::set<char> nonTerminal::getSuivants()
 
 void nonTerminal::afficherSuivants()
 {
-	std::cout << "SUIVANT ( " << this->getNom() << " ) =";
+	std::cout << "SUIVANT ( " << this->getNom() << " ) =  ";
 	for (std::set<char>::iterator it = suivant.begin(); it != suivant.end(); it++)
 	{
-		std::cout << " " << *it << " ";
+		std::cout <<*it << " " ;
 	}
 	std::cout << std::endl;
 }
