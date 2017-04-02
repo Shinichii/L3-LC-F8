@@ -36,6 +36,7 @@ public:
 	bool ajouterSuivantsSaufEpsilon(std::set<char> caracteres);
 
 	std::set<char> getPremiers();
+	
 	void afficherPremiers();
 
 	bool premiersContientEpsilon();

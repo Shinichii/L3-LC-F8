@@ -17,6 +17,7 @@ int main()
 		g.calculPremiers();
 		g.calculSuivants();
 		g.afficher();
+		g.constructionTableAnalyse();
 		std::cout << "Voulez-vous continuer ? (O/N)" << std::endl;
 		do
 		{

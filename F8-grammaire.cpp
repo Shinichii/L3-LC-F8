@@ -219,9 +219,90 @@ void grammaire::calculSuivants()
 
 }
 
+std::set<char> grammaire::getPremiersDuneRegle(std::vector<char> regle)
+{
+	std::set<char> premiers;
+	bool recuperer = true;
+	int i = 0;
+	while(i < regle.size())
+	{
+		if (!estTerminal(regle.at(i)) && recuperer)
+		{
+			if (this->recupererElement(regle.at(i))->premiersContientEpsilon())
+			{
+				premiers.insert('#');
+				recuperer = true;
+			}
+			else
+			{
+				recuperer = false;
+			}
+			for (char prem : this->recupererElement(regle.at(i))->getPremiers())
+			{
+				premiers.insert(prem);
+			}
+		}
+		else if (recuperer)
+		{
+			premiers.insert(regle.at(i));
+			recuperer = false;
+		}
+		i++;
+	}
+	return std::set<char>(premiers);
+}
+
 void grammaire::constructionTableAnalyse()
 {
+	std::string** tableAnalyse;
 	std::cout << "Not done." << std::endl;
+	//Allocation
+	tableAnalyse = new std::string*[this->NT.size()];
+	for (int i = 0; i < NT.size(); i++)
+	{
+		tableAnalyse[i] = new std::string[this->terminaux.size()];
+		for (int j = 0; j < terminaux.size(); j++)
+		{
+			tableAnalyse[i][j] = " ";
+		}
+	}
+	//Remplir le tableau
+	for (int i = 0; i < NT.size(); i++)
+	{
+		nonTerminal nt = NT.at(i);
+		for (std::vector<char> regle : nt.getRegles())
+		{
+			std::set<char> premierProd = this->getPremiersDuneRegle(regle);
+			for (char caractere : premierProd)
+			{
+				if (estTerminal(caractere))
+				{
+					if (caractere != '#')
+					{
+						auto rechercheIndice = std::find(this->terminaux.begin(), this->terminaux.end(), caractere);
+						if (rechercheIndice != this->terminaux.end())
+						{
+							int j = std::distance(this->terminaux.begin(), rechercheIndice);
+							tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
+						}
+					}
+					else
+					{
+						std::set<char>aAjouter = NT.at(i).getSuivants();
+						for (char suivantA : aAjouter)
+						{
+							auto rechercheIndice = std::find(this->terminaux.begin(), this->terminaux.end(), suivantA);
+							if (rechercheIndice != this->terminaux.end())
+							{
+								int j = std::distance(this->terminaux.begin(), rechercheIndice);
+								tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	/*http://digital.cs.usu.edu/~allanv/cs4700/HandoutScott2.pdf
 	M[nt;t]
 	Pour chaque règle r de NT.at(i)
@@ -230,5 +311,26 @@ void grammaire::constructionTableAnalyse()
 		3.Si Epsilon dans PREMIER(r) ET $ dans SUIVANT(NT), ajouter r à M[nt;$]
 		4.Le reste à " "
 	*/
+	for (char terminal : terminaux)
+	{
+		std::cout << "    " << terminal;
+	}
+	std::cout << std::endl;
+	for (int i = 0; i < NT.size(); i++)
+	{
+		std::cout << NT.at(i).getNom() << " ";
+		for (int j = 0; j < terminaux.size(); j++)
+		{
+			if (tableAnalyse[i][j] != " ")
+			{
+				std::cout << NT.at(i).getNom() << "->" << tableAnalyse[i][j] << " ";
+			}
+			else
+			{
+				std::cout << "    ";
+			}
+		}
+		std::cout << std::endl;
+	}
 }
 

@@ -171,6 +171,8 @@ std::set<char> nonTerminal::getPremiers()
 	return std::set<char>(this->premier);
 }
 
+
+
 void nonTerminal::afficherPremiers()
 {
 	std::cout << "PREMIER [ " << this->nom << " ] =  ";

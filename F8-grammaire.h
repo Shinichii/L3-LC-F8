@@ -27,6 +27,8 @@ class grammaire
 		std::set<char> calculPremier(nonTerminal *nt);
 		void calculSuivants();
 
+		std::set<char> getPremiersDuneRegle(std::vector<char> regle);
+
 		void constructionTableAnalyse();
     protected:
     private:
