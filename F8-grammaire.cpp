@@ -260,7 +260,7 @@ void grammaire::constructionTableAnalyse()
 	tableAnalyse = new std::string*[this->NT.size()];
 	for (int i = 0; i < NT.size(); i++)
 	{
-		tableAnalyse[i] = new std::string[this->terminaux.size()];
+		tableAnalyse[i] = new std::string[this->terminaux.size()+1];//derniere case est $
 		for (int j = 0; j < terminaux.size(); j++)
 		{
 			tableAnalyse[i][j] = " ";
@@ -291,11 +291,17 @@ void grammaire::constructionTableAnalyse()
 						std::set<char>aAjouter = NT.at(i).getSuivants();
 						for (char suivantA : aAjouter)
 						{
-							auto rechercheIndice = std::find(this->terminaux.begin(), this->terminaux.end(), suivantA);
-							if (rechercheIndice != this->terminaux.end())
+							if (suivantA == '$')
 							{
-								int j = std::distance(this->terminaux.begin(), rechercheIndice);
-								tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
+								tableAnalyse[i][terminaux.size()] = std::string(regle.begin(), regle.end());
+							}
+							else {
+								auto rechercheIndice = std::find(this->terminaux.begin(), this->terminaux.end(), suivantA);
+								if (rechercheIndice != this->terminaux.end())
+								{
+									int j = std::distance(this->terminaux.begin(), rechercheIndice);
+									tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
+								}
 							}
 						}
 					}
@@ -303,19 +309,11 @@ void grammaire::constructionTableAnalyse()
 			}
 		}
 	}
-	/*http://digital.cs.usu.edu/~allanv/cs4700/HandoutScott2.pdf
-	M[nt;t]
-	Pour chaque règle r de NT.at(i)
-		1.Pour chaque terminal k dans PREMIER(r), on ajoute r à M[nt;t]
-		2.Si Epsilon dans PREMIER(r) ajouter r à M[nt;b] pour chaque terminal b dans SUIVANT(A)
-		3.Si Epsilon dans PREMIER(r) ET $ dans SUIVANT(NT), ajouter r à M[nt;$]
-		4.Le reste à " "
-	*/
 	for (char terminal : terminaux)
 	{
-		std::cout << "    " << terminal;
+		std::cout << "\t" << terminal;
 	}
-	std::cout << std::endl;
+	std::cout << "    $" << std::endl;
 	for (int i = 0; i < NT.size(); i++)
 	{
 		std::cout << NT.at(i).getNom() << " ";
@@ -323,7 +321,7 @@ void grammaire::constructionTableAnalyse()
 		{
 			if (tableAnalyse[i][j] != " ")
 			{
-				std::cout << NT.at(i).getNom() << "->" << tableAnalyse[i][j] << " ";
+				std::cout <<"\t" << NT.at(i).getNom() << "->" << tableAnalyse[i][j];
 			}
 			else
 			{
