@@ -262,7 +262,7 @@ void grammaire::constructionTableAnalyse()
 	for (int i = 0; i < NT.size(); i++)
 	{
 		tableAnalyse[i] = new std::string[this->terminaux.size()+1];//derniere case est $
-		for (int j = 0; j < terminaux.size(); j++)
+		for (int j = 0; j < terminaux.size()+1; j++)
 		{
 			tableAnalyse[i][j] = " ";
 		}
