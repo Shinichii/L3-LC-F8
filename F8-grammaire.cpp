@@ -228,7 +228,8 @@ std::set<char> grammaire::getPremiersDuneRegle(std::vector<char> regle)
 	{
 		if (!estTerminal(regle.at(i)) && recuperer)
 		{
-			if (this->recupererElement(regle.at(i))->premiersContientEpsilon())
+			nonTerminal *temporaire = recupererElement(regle.at(i));
+			if (this->recupererElement(temporaire->premiersContientEpsilon()))
 			{
 				premiers.insert('#');
 				recuperer = true;
@@ -275,17 +276,15 @@ void grammaire::constructionTableAnalyse()
 			std::set<char> premierProd = this->getPremiersDuneRegle(regle);
 			for (char caractere : premierProd)
 			{
-				if (estTerminal(caractere))
+				if (caractere != '#')
 				{
-					if (caractere != '#')
+					auto rechercheIndice = std::find(this->terminaux.begin(), this->terminaux.end(), caractere);
+					if (rechercheIndice != this->terminaux.end())
 					{
-						auto rechercheIndice = std::find(this->terminaux.begin(), this->terminaux.end(), caractere);
-						if (rechercheIndice != this->terminaux.end())
-						{
-							int j = std::distance(this->terminaux.begin(), rechercheIndice);
-							tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
-						}
+						int j = std::distance(this->terminaux.begin(), rechercheIndice);
+						tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
 					}
+				}
 					else
 					{
 						std::set<char>aAjouter = NT.at(i).getSuivants();
@@ -295,7 +294,8 @@ void grammaire::constructionTableAnalyse()
 							{
 								tableAnalyse[i][terminaux.size()] = std::string(regle.begin(), regle.end());
 							}
-							else {
+							else 
+							{
 								auto rechercheIndice = std::find(this->terminaux.begin(), this->terminaux.end(), suivantA);
 								if (rechercheIndice != this->terminaux.end())
 								{
@@ -308,16 +308,15 @@ void grammaire::constructionTableAnalyse()
 				}
 			}
 		}
-	}
 	for (char terminal : terminaux)
 	{
 		std::cout << "\t" << terminal;
 	}
-	std::cout << "    $" << std::endl;
+	std::cout << "\t$" << std::endl;
 	for (int i = 0; i < NT.size(); i++)
 	{
 		std::cout << NT.at(i).getNom() << " ";
-		for (int j = 0; j < terminaux.size(); j++)
+		for (int j = 0; j < terminaux.size()+1; j++)
 		{
 			if (tableAnalyse[i][j] != " ")
 			{
@@ -325,7 +324,7 @@ void grammaire::constructionTableAnalyse()
 			}
 			else
 			{
-				std::cout << "    ";
+				std::cout << "\t";
 			}
 		}
 		std::cout << std::endl;
