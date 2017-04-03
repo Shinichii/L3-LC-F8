@@ -4,6 +4,7 @@ grammaire::grammaire()
 {
     //ctor
     axiome = '#';
+	this->tableAnalyse = NULL;
 }
 bool estTerminal(char c)
 {
@@ -143,6 +144,7 @@ void grammaire::afficher()
 	{
 		NT.at(i).afficherSuivants();
 	}
+	this->afficherTableAnalyse();
 }
 
 void grammaire::calculPremiers()
@@ -255,16 +257,14 @@ std::set<char> grammaire::getPremiersDuneRegle(std::vector<char> regle)
 
 void grammaire::constructionTableAnalyse()
 {
-	std::string** tableAnalyse;
-	std::cout << "Not done." << std::endl;
 	//Allocation
-	tableAnalyse = new std::string*[this->NT.size()];
+	this->tableAnalyse = new std::string*[this->NT.size()];
 	for (int i = 0; i < NT.size(); i++)
 	{
-		tableAnalyse[i] = new std::string[this->terminaux.size()+1];//derniere case est $
+		this->tableAnalyse[i] = new std::string[this->terminaux.size()+1];//derniere case est $
 		for (int j = 0; j < terminaux.size()+1; j++)
 		{
-			tableAnalyse[i][j] = " ";
+			this->tableAnalyse[i][j] = " ";
 		}
 	}
 	//Remplir le tableau
@@ -282,7 +282,7 @@ void grammaire::constructionTableAnalyse()
 					if (rechercheIndice != this->terminaux.end())
 					{
 						int j = std::distance(this->terminaux.begin(), rechercheIndice);
-						tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
+						this->tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
 					}
 				}
 					else
@@ -292,7 +292,7 @@ void grammaire::constructionTableAnalyse()
 						{
 							if (suivantA == '$')
 							{
-								tableAnalyse[i][terminaux.size()] = std::string(regle.begin(), regle.end());
+								this->tableAnalyse[i][terminaux.size()] = std::string(regle.begin(), regle.end());
 							}
 							else 
 							{
@@ -300,7 +300,7 @@ void grammaire::constructionTableAnalyse()
 								if (rechercheIndice != this->terminaux.end())
 								{
 									int j = std::distance(this->terminaux.begin(), rechercheIndice);
-									tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
+									this->tableAnalyse[i][j] = std::string(regle.begin(), regle.end());
 								}
 							}
 						}
@@ -308,6 +308,16 @@ void grammaire::constructionTableAnalyse()
 				}
 			}
 		}
+	
+}
+
+void grammaire::afficherTableAnalyse()
+{
+	if (this->tableAnalyse == NULL)
+	{
+		std::cout << "[INFO] : Table d'analyse non generee. On ne l'affiche pas"<<std::endl;
+		return;
+	}
 	for (char terminal : terminaux)
 	{
 		std::cout << "\t" << terminal;
@@ -316,11 +326,11 @@ void grammaire::constructionTableAnalyse()
 	for (int i = 0; i < NT.size(); i++)
 	{
 		std::cout << NT.at(i).getNom() << " ";
-		for (int j = 0; j < terminaux.size()+1; j++)
+		for (int j = 0; j < terminaux.size() + 1; j++)
 		{
 			if (tableAnalyse[i][j] != " ")
 			{
-				std::cout <<"\t" << NT.at(i).getNom() << "->" << tableAnalyse[i][j];
+				std::cout << "\t" << NT.at(i).getNom() << "->" << this->tableAnalyse[i][j];
 			}
 			else
 			{
@@ -329,5 +339,130 @@ void grammaire::constructionTableAnalyse()
 		}
 		std::cout << std::endl;
 	}
+}
+
+void grammaire::testerMot()
+{
+	char reponseUtilisateur = 'n';
+	do
+	{
+		std::string entree;
+		std::cout << "Veuillez saisir une chaine de caracteres a tester" << std::endl;
+		std::cin >> entree;
+		lireMot(entree);
+		std::cout << "Voulez-vous essayer une autre chaine de caracteres ?(O/N)";
+		do
+		{
+			std::cin >> reponseUtilisateur;
+		} while (std::cin.bad() && reponseUtilisateur != 'O' && reponseUtilisateur != 'o' && reponseUtilisateur != 'n' && reponseUtilisateur != 'N');
+	} while (reponseUtilisateur == 'o' || reponseUtilisateur == 'O');
+}
+
+void grammaire::lireMot(std::string w)
+{
+	//Initialisation
+	std::stack<char> pile;
+	pile.push('$');
+	pile.push(this->getAxiome());
+	validationChaine(w);
+	int ps = 0;
+	char X, a;
+	do
+	{
+		X = pile.top();
+		a = w.at(ps);
+		if (X == '$' || estTerminal(X)) 
+		{
+			if (X == a)
+			{
+				pile.pop();
+				ps++;
+			}
+			else
+			{
+				messageErreurLecture(w, ps);
+				return;
+			}
+		}
+		else //X est un nonTerminal
+		{
+			int i = 0, j = 0;
+			auto positionItTerminal = std::find(terminaux.begin(), terminaux.end(), a);
+			nonTerminal elementRecupere = *(this->recupererElement(X));
+			auto positionItNT = std::find(this->NT.begin(), this->NT.end(), elementRecupere);
+			if (a == '$' && positionItNT != NT.end())
+			{
+				i = std::distance(NT.begin(), positionItNT);
+				j = terminaux.size();
+				std::string tmp = this->tableAnalyse[i][j];
+				if (tmp != " ")
+				{
+					pile.pop();
+					for (int k = tmp.length() - 1; k >= 0; k--)
+					{
+						if (tmp.at(k) != '#')
+						{
+							pile.push(tmp.at(k));
+						}
+					}
+					std::cout << X << "->" << tmp << std::endl;
+				}
+				else
+				{
+					messageErreurLecture(w, ps);
+					return;
+				}
+			}
+			else if (positionItTerminal == terminaux.end() || positionItNT == this->NT.end())
+			{
+				messageErreurLecture(w, ps);
+				return;
+			}
+			else
+			{
+				i = std::distance(NT.begin(), positionItNT);
+				j = std::distance(terminaux.begin(), positionItTerminal);
+				std::string tmp = this->tableAnalyse[i][j];
+				if (tmp != " ")
+				{
+					pile.pop();
+					for (int k = tmp.length()-1; k >= 0; k--)
+					{
+						if (tmp.at(k) != '#')
+						{
+							pile.push(tmp.at(k));
+						}
+					}
+					std::cout << X << "->" << tmp << std::endl;
+				}
+				else
+				{
+					messageErreurLecture(w, ps);
+					return;
+				}
+			}
+		}
+	} while (X != '$');
+	std::cout << "[INFO] La chaine : " << w << " a ete lue avec succes !" << std::endl;
+}
+
+void grammaire::validationChaine(std::string& w)
+{
+	if (w.at(w.length()-1) != '$')
+	{
+		w.append("$");
+	}
+	return;
+}
+
+void grammaire::messageErreurLecture(std::string w, int ps)
+{
+	std::cout << "[ERREUR] : La grammaire ne peut interpreter cette chaine" << std::endl;
+	std::cout << w<<std::endl;
+	for (int i = 0; i < ps; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << "*" << std::endl;
 }
 

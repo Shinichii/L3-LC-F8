@@ -19,7 +19,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream &flux, nonTerminal const& nt );
 
-    char getNom();
+    char getNom() const;
 	std::vector<std::vector<char>> const& getRegles() const;
 	bool estRecursif();
 	bool estRecursif(std::vector<char>::iterator regle);
@@ -43,6 +43,8 @@ public:
 
 	std::set<char> getSuivants();
 	void afficherSuivants();
+
+	friend bool operator==(const nonTerminal &nt1, const nonTerminal &nt2);
 protected:
 private:
     char nom;

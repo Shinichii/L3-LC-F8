@@ -30,7 +30,11 @@ std::ostream& operator<<(std::ostream &flux, nonTerminal const& nt)
     }
     return flux;
 }
-char nonTerminal::getNom()
+bool operator==(const nonTerminal & nt1, const nonTerminal & nt2)
+{
+	return nt1.getNom() == nt2.getNom();
+}
+char nonTerminal::getNom() const
 {
     return this->nom;
 }

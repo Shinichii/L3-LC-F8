@@ -18,6 +18,8 @@ int main()
 		g.calculSuivants();
 		g.afficher();
 		g.constructionTableAnalyse();
+		g.afficher();
+		g.testerMot();
 		std::cout << "Voulez-vous continuer ? (O/N)" << std::endl;
 		do
 		{
