@@ -10,8 +10,8 @@ int main()
 	while (continuer)
 	{
 		grammaire g;
-		//lectureFichier(choisirElement(".txt"), g);
-		lectureFichier("D:\\LangagesEtCompilation\\L3-LC-F8\\F8-G9.txt", g);
+		lectureFichier(choisirElement(".txt"), g);
+		//lectureFichier("D:\\LangagesEtCompilation\\L3-LC-F8\\F8-G3.txt", g);
 		g.afficher();
 		g.traitementGrammaireRecursive();
 		g.calculPremiers();
