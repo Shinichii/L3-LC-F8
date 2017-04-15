@@ -361,9 +361,9 @@ void grammaire::testerMot()
 void grammaire::lireMot(std::string w)
 {
 	//Initialisation
-	std::stack<char> pile;
-	pile.push('$');
-	pile.push(this->getAxiome());
+	std::deque<char> pile;
+	pile.push_back('$');
+	pile.push_back(this->getAxiome());
 	validationChaine(w);
 	int ps = 0;
 	char X, a;
@@ -371,18 +371,18 @@ void grammaire::lireMot(std::string w)
 	do
 	{
 		std::cout << std::endl;
-		for (std::stack<char> tmp = pile; !tmp.empty(); tmp.pop())
+		for (std::deque<char> tmp = pile; !tmp.empty(); tmp.pop_front())
 		{
-			std::cout << tmp.top();
+			std::cout << tmp.front();
 		}
 		std::cout << "\t" << w.substr(ps) << "\t";
-		X = pile.top();
+		X = pile.back();
 		a = w.at(ps);
 		if (X == '$' || estTerminal(X)) 
 		{
 			if (X == a)
 			{
-				pile.pop();
+				pile.pop_back();
 				ps++;
 			}
 			else
@@ -404,12 +404,12 @@ void grammaire::lireMot(std::string w)
 				std::string tmp = this->tableAnalyse[i][j];
 				if (tmp != " ")
 				{
-					pile.pop();
+					pile.pop_back();
 					for (int k = tmp.length() - 1; k >= 0; k--)
 					{
 						if (tmp.at(k) != '#')
 						{
-							pile.push(tmp.at(k));
+							pile.push_back(tmp.at(k));
 						}
 					}
 					std::cout << X << "->" << tmp;
@@ -432,12 +432,12 @@ void grammaire::lireMot(std::string w)
 				std::string tmp = this->tableAnalyse[i][j];
 				if (tmp != " ")
 				{
-					pile.pop();
+					pile.pop_back();
 					for (int k = tmp.length()-1; k >= 0; k--)
 					{
 						if (tmp.at(k) != '#')
 						{
-							pile.push(tmp.at(k));
+							pile.push_back(tmp.at(k));
 						}
 					}
 					std::cout << X << "->" << tmp;
