@@ -367,8 +367,15 @@ void grammaire::lireMot(std::string w)
 	validationChaine(w);
 	int ps = 0;
 	char X, a;
+	std::cout << "Pile\tEntree\tSortie" << std::endl;
 	do
 	{
+		std::cout << std::endl;
+		for (std::stack<char> tmp = pile; !tmp.empty(); tmp.pop())
+		{
+			std::cout << tmp.top();
+		}
+		std::cout << "\t" << w.substr(ps) << "\t";
 		X = pile.top();
 		a = w.at(ps);
 		if (X == '$' || estTerminal(X)) 
@@ -405,7 +412,7 @@ void grammaire::lireMot(std::string w)
 							pile.push(tmp.at(k));
 						}
 					}
-					std::cout << X << "->" << tmp << std::endl;
+					std::cout << X << "->" << tmp;
 				}
 				else
 				{
@@ -433,7 +440,7 @@ void grammaire::lireMot(std::string w)
 							pile.push(tmp.at(k));
 						}
 					}
-					std::cout << X << "->" << tmp << std::endl;
+					std::cout << X << "->" << tmp;
 				}
 				else
 				{
@@ -443,7 +450,7 @@ void grammaire::lireMot(std::string w)
 			}
 		}
 	} while (X != '$');
-	std::cout << "[INFO] La chaine : " << w << " a ete lue avec succes !" << std::endl;
+	std::cout << std::endl <<"[INFO] La chaine : " << w << " a ete lue avec succes !" << std::endl;
 }
 
 void grammaire::validationChaine(std::string& w)
@@ -457,6 +464,7 @@ void grammaire::validationChaine(std::string& w)
 
 void grammaire::messageErreurLecture(std::string w, int ps)
 {
+	std::cout << std::endl;
 	std::cout << "[ERREUR] : La grammaire ne peut interpreter cette chaine" << std::endl;
 	std::cout << w<<std::endl;
 	for (int i = 0; i < ps; i++)
