@@ -9,6 +9,8 @@
 #include <vector>
 using namespace std;
 
+#define PATH_PAR_DEFAUT "./"
+
 namespace fs = std::experimental::filesystem;
 
 bool extensionValide(string s, string extension);
